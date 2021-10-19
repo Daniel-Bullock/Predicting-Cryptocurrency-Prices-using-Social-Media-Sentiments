@@ -4,3 +4,4 @@ This is the base project for Fall 2021 IE598/498 High Frequency Trading Group 04
 
 ## Teammates
 Michael Ruscito - ruscito2@illinois.edu
+Ranvir Rana - rbrana2@illinois.edu
