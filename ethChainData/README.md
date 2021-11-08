@@ -10,6 +10,6 @@ I am pushing `LINK-token-transfer.json` file to gitlab for reference to my teamm
 
 `jsonParser1` is a test code to extract useful time series from the token transfer data.
 
-###PENDING:
+##Pending:
 - Write a parser to extract information compatible with the prediction model
 - Extend code to other ERC20 derived tokens
