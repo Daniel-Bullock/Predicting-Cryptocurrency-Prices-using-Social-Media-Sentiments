@@ -477,7 +477,7 @@ if __name__ == "__main__":
 
         def __init__(self):
             self.state = None
-            self.fname = "LINK-transfer-state.json"
+            self.fname = "data/LINK-transfer-state.json"
             # How many second ago we saved the JSON file
             self.last_save = 0
 
