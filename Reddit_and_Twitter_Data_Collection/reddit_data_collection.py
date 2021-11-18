@@ -3,9 +3,17 @@ from datetime import datetime, timezone, timedelta, date
 from psaw import PushshiftAPI
 import pandas as pd
 
-api = PushshiftAPI()
 
-def create_dataframe(keywords, start_date, end_date):
+#example
+#start_date = datetime(2020, 1, 1, 12)  #year, month, day, hour(0-23)
+#end_date = datetime(2020, 1, 1, 23)
+#keywords ='Ripple|XRP' #separate keywords with OR(|) operator (no space)
+#reddit_df = create_reddit_dataframe(keywords, start_date, end_date)  #creates dataframe for these keywords
+#print(reddit_df)
+
+
+def create_reddit_dataframe(keywords, start_date, end_date):
+    api = PushshiftAPI()    #declare api
     delta = timedelta(hours=1)   #time delta for the loop
     inter_date = start_date + delta #intermediate date an hour ahead
 
@@ -43,10 +51,4 @@ def create_dataframe(keywords, start_date, end_date):
     return df
 
 
-#example
-start_date = datetime(2020, 1, 1, 12)  #year, month, day, hour(0-23)
-end_date = datetime(2020, 1, 1, 23)
 
-ripple_keywords ='Ripple|XRP' #separate keywords with OR(|) operator (no space)
-ripple_df = create_dataframe(ripple_keywords, start_date, end_date)  #creates dataframe for these keywords
-#print(ripple_df)
