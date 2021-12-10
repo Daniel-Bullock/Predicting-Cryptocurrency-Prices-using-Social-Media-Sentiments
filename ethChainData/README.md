@@ -11,9 +11,7 @@ I am pushing `LINK-token-transfer.json` file to gitlab for reference to my teamm
 
 `jsonParser1` is the code to extract useful time series from the token transfer data.
 
-`chainwatcher2.py` is now generalized to support both ethereum mainnet and polygon mainnet. However there are some bugs related to block Validation. 
-Once these are resolved, we will be able to call polygon tokens as well.
+`chainwatcher2.py` is now generalized to support both ethereum mainnet and polygon mainnet.
 
 Some example calls are:
 - `python3 chainWatcher2.py polygon 1000 LINK 0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39`
-- 

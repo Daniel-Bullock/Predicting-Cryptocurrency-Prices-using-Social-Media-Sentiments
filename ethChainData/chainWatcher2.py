@@ -20,6 +20,7 @@ from abc import ABC, abstractmethod
 from typing import Tuple, Optional, Callable, List, Iterable
 
 from web3 import Web3
+from web3.middleware import geth_poa_middleware
 from web3.contract import Contract
 from web3.datastructures import AttributeDict
 from web3.exceptions import BlockNotFound
@@ -492,7 +493,7 @@ if __name__ == "__main__":
 
         def __init__(self):
             self.state = None
-            self.fname = "data/" + token_ticker + "-" + "blockchain" + "-transfer-state.json"
+            self.fname = "data/" + token_ticker + "-" + blockchain + "-transfer-state.json"
             # How many second ago we saved the JSON file
             self.last_save = 0
 
@@ -598,6 +599,7 @@ if __name__ == "__main__":
         provider.middlewares.clear()
 
         web3 = Web3(provider)
+        web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
         # Prepare stub ERC-20 contract object
         abi = json.loads(ABI)
