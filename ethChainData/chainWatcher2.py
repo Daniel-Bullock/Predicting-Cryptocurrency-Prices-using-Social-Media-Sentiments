@@ -20,6 +20,7 @@ from abc import ABC, abstractmethod
 from typing import Tuple, Optional, Callable, List, Iterable
 
 from web3 import Web3
+from web3.middleware import geth_poa_middleware
 from web3.contract import Contract
 from web3.datastructures import AttributeDict
 from web3.exceptions import BlockNotFound
@@ -439,8 +440,23 @@ if __name__ == "__main__":
     # RCC has around 11k Transfer events
     # https://etherscan.io/token/0x9b6443b0fb9c241a7fdac375595cea13e6b7807a
     #RCC_ADDRESS = "0x9b6443b0fB9C241A7fdAC375595cEa13e6B7807A"
-    RCC_ADDRESS = Web3.toChecksumAddress('0x514910771af9ca656af840dff83e8264ecf986ca') #RR_caution: Chainlink address
+    if len(sys.argv) < 5:
+        print("Usage: chainWatcher2.py blockchain-name(eth or polygon) number-of-latest-blocks-to-scan token-ticker token-address")
+        sys.exit(1)
 
+    blockchain = sys.argv[1]
+    if blockchain == "eth":
+        api_url = 'https://mainnet.infura.io/v3/b40beb8540af492e968e6b67952443cc'
+    elif blockchain == "polygon":
+        api_url = 'https://polygon-mainnet.infura.io/v3/74a63497e0374a9abdbb90d60d1fd4e3'
+    else:
+        print("incorrect blockchain identifier")
+        sys.exit(1)
+    token_ticker = sys.argv[3]
+    token_contract_address = sys.argv[4]
+    RCC_ADDRESS = Web3.toChecksumAddress(token_contract_address) #RR_caution: Chainlink address
+
+    # Chainlink address = '0x514910771af9ca656af840dff83e8264ecf986ca' for ethereum mainnet
     # Reduced ERC-20 ABI, only Transfer event
     ABI = """[
         {
@@ -477,7 +493,7 @@ if __name__ == "__main__":
 
         def __init__(self):
             self.state = None
-            self.fname = "data/LINK-transfer-state.json"
+            self.fname = "data/" + token_ticker + "-" + blockchain + "-transfer-state.json"
             # How many second ago we saved the JSON file
             self.last_save = 0
 
@@ -569,11 +585,6 @@ if __name__ == "__main__":
 
     def run():
 
-        if len(sys.argv) < 3:
-            print("Usage: chainWatcher2.py http://your-node-url number-of-latest-blocks-to-scan")
-            sys.exit(1)
-
-        api_url = sys.argv[1]
         num_latest_blocks = int(sys.argv[2])
 
         # Enable logs to the stdout.
@@ -588,6 +599,7 @@ if __name__ == "__main__":
         provider.middlewares.clear()
 
         web3 = Web3(provider)
+        web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
         # Prepare stub ERC-20 contract object
         abi = json.loads(ABI)

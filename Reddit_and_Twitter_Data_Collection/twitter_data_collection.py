@@ -4,14 +4,6 @@ from datetime import datetime, timezone, timedelta, date
 import pytz
 
 
-#Example
-#utc=pytz.UTC
-#start_date = datetime(2021, 1, 1, 0,0,tzinfo=utc)  #year, month, day, hour(0-23), minute (0-59)
-#end_date = datetime(2021, 1, 2, 0,0,tzinfo=utc)  #inclusive
-#keywords = "bitcoin OR BTC"   #separate different keywords with " OR "
-#twitter_dataframe = create_twitter_dataframe(keywords,start_date,end_date)
-#print(twitter_dataframe)
-
 
 def create_twitter_dataframe(keywords,start_date,end_date):
     #List to append tweet data to
@@ -40,7 +32,7 @@ def create_twitter_dataframe(keywords,start_date,end_date):
             search_input = keywords + " since:"  + since + " until:" + until
 
             #loops over every tweet from the since time to the until time containing the keywords
-            for i,tweet in enumerate(twitter.TwitterSearchScraper(search_input).get_items()):
+            for i,tweet in enumerate(twitter.TwitterSearchScraper(search_input, retries = 1000).get_items()):
                 if tweet.date < current_hour_plus_one and tweet.date > current_date_and_hour:  #if tweet is within hour currently at, add it to the count
                     c += 1   
             tweets_list.append([current_date_and_hour, c])   #apppend current time to the list with the count of tweets during that hour
@@ -53,3 +45,10 @@ def create_twitter_dataframe(keywords,start_date,end_date):
     return tweets_df
 
 
+#Example
+utc=pytz.UTC
+start_date = datetime(2021, 1, 1, 0,0,tzinfo=utc)  #year, month, day, hour(0-23), minute (0-59)
+end_date = datetime(2021, 1, 2, 0,0,tzinfo=utc)  #inclusive
+keywords = "bitcoin OR BTC"   #separate different keywords with " OR "
+twitter_dataframe = create_twitter_dataframe(keywords,start_date,end_date)
+print(twitter_dataframe)
