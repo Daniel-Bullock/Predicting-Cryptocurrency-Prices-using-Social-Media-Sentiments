@@ -1,0 +1,27 @@
+from pytrends.request import TrendReq
+import pandas as pd 
+
+pytrends = TrendReq(hl='en-US', tz=360) 
+
+keywords = ["bitcoin", "BTC", "XBT", "GBTC", "BITO"]
+keywords2 =["Ethereum", "ETH", "DogeCoin", "DOGE"]
+keywords3 = ["Ripple", "XRP", "Maker", "MKR"] 
+keywords4 = ["Chainlink", "CHAIN", "Cardano", "ADA"] 
+
+pytrends.build_payload(keywords, cat=0, timeframe='today 5-y') 
+
+google_df1=pytrends.get_historical_interest(keywords, year_start=2020, month_start=1, day_start=1, hour_start=0, year_end=2020, month_end=12, day_end=31, hour_end=23, cat=0, sleep=0)
+google_df2=pytrends.get_historical_interest(keywords2, year_start=2020, month_start=1, day_start=1, hour_start=0, year_end=2020, month_end=12, day_end=31, hour_end=23, cat=0, sleep=0)
+google_df3=pytrends.get_historical_interest(keywords3, year_start=2020, month_start=1, day_start=1, hour_start=0, year_end=2020, month_end=12, day_end=31, hour_end=23, cat=0, sleep=0)
+google_df4=pytrends.get_historical_interest(keywords4, year_start=2020, month_start=1, day_start=1, hour_start=0, year_end=2020, month_end=12, day_end=31, hour_end=23, cat=0, sleep=0)
+
+google_df = google_df1.copy()
+google_df["frequency_ethereum"] = google_df2["frequency_ethereum"]
+google_df["frequency_dogecoin"] = google_df2["frequency_dogecoin"]
+google_df["frequency_ripple"] = google_df3["frequency_ripple"]
+google_df["frequency_maker"] = google_df3["frequency_maker"]
+google_df["frequency_chainlink"] = google_df4["frequency_chainlink"]
+google_df["frequency_cardano"] = google_df4["frequency_cardano"]
+
+
+google_df.to_csv('google_trends_data.csv')
