@@ -446,7 +446,10 @@ if __name__ == "__main__":
 
     blockchain = sys.argv[1]
     if blockchain == "eth":
-        api_url = 'https://mainnet.infura.io/v3/b40beb8540af492e968e6b67952443cc'
+        api_url = 'https://mainnet.infura.io/v3/b40beb8540af492e968e6b67952443cc' #Account 1
+        #api_url = 'https://mainnet.infura.io/v3/e2d4c3def23c4f79a7b0b0620b1ed8b7' #Account 2
+        #api_url = 'https://mainnet.infura.io/v3/17d53ab55e7047b7b00f03c3aed7ec89' #Account 3
+        #api_url = 'https://mainnet.infura.io/v3/e4a15174f6304761a228fdbbef0b7ff2' #Account 4
     elif blockchain == "polygon":
         api_url = 'https://polygon-mainnet.infura.io/v3/74a63497e0374a9abdbb90d60d1fd4e3'
     else:
@@ -493,7 +496,7 @@ if __name__ == "__main__":
 
         def __init__(self):
             self.state = None
-            self.fname = "data/" + token_ticker + "-" + blockchain + "-transfer-state.json"
+            self.fname = "data/" + token_ticker + "-" + blockchain + "-transfer-state-final.json"
             # How many second ago we saved the JSON file
             self.last_save = 0
 
