@@ -131,6 +131,9 @@ class NB:
 
         # calculate price direction probabilities for social data
         for social in test_data:
+            prob_dec = math.log(prior_prob_dec)
+            prob_stag = math.log(prior_prob_stag)
+            prob_inc = math.log(prior_prob_inc)
             if social in self.decrease_prob:
                 prob_dec += math.log(self.decrease_prob[social])
             else:
@@ -196,9 +199,9 @@ class NB:
 
         for social in test_data:
             try:
-                price_predictions.append(self._cnb([[social]])[0])
+                price_predictions.append(self._cnb.predict([[social]])[0])
             except IndexError:
-                price_predictions.append(self._cnb([[len(self._cnb.category_count_)-1]])[0])
+                price_predictions.append(self._cnb.predict([[len(self._cnb.category_count_)-1]])[0])
 
         return price_predictions
 
@@ -260,6 +263,7 @@ class NB:
                         +1 for predicted increase in price
                         0 for perdicted stagnant price
                         -1 for predicted decrease in price
+        side effects: resets all training data
     '''
     def full_suite(self, new_training_data:list, test_data:list) -> tuple:
         self.reset()
