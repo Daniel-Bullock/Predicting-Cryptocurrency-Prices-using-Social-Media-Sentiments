@@ -15,7 +15,7 @@ utc=pytz.UTC
 start_date_twitter = datetime(2020, 1, 1, 0,0,tzinfo=utc)  #year, month, day, hour(0-23), minute (0-59)
 end_date_twitter = datetime(2020, 1, 2, 0,0,tzinfo=utc)  #inclusive
 
-keywords_list = ["ethereum", "ETH"]
+keywords_list = ["bitcoin", "BTC", "XBT", "GBTC", "BITO"]
 keywords_reddit = ""
 keywords_twitter = ""
 
@@ -31,7 +31,7 @@ for keyword in keywords_list:
 
 reddit_df = create_reddit_dataframe(keywords_reddit, start_date_reddit, end_date_reddit)
 print(reddit_df)
-reddit_df.to_csv('reddit_ethereum_ETH.csv')
+reddit_df.to_csv('reddit_bitcoin.csv')
 
 #twitter_df = create_twitter_dataframe(keywords_twitter, start_date_twitter, end_date_twitter)
 #print(twitter_df)
