@@ -26,6 +26,7 @@ if __name__ == "__main__":
     start_timestamp = sys.argv[3]
     time_format = "%Y-%m-%d %H:%M:%S"
     # If no start timestamp is specified, start from the listing date on bitmex
+    print(datetime.fromisoformat(start_timestamp))
     if start_timestamp=="None":
         start_timestamp = bitmex_client.Trade.Trade_getBucketed(symbol=default_symbol, \
                                     binSize=default_kline_size, count=1, reverse=False).result()[0][0]['timestamp']
@@ -49,6 +50,7 @@ if __name__ == "__main__":
 
     for query_iter in tqdm(range(num_queries)):
         new_start_timestamp = start_timestamp + timedelta(minutes = query_iter * batch_size * binsizes[default_kline_size])
+        print(new_start_timestamp)
         data = bitmex_client.Trade.Trade_getBucketed(symbol=default_symbol, binSize=default_kline_size, count=batch_size,\
                                                  startTime = new_start_timestamp).result()[0]
         for i in range(len(data)):
@@ -57,6 +59,7 @@ if __name__ == "__main__":
             high_list.append(data[i]['high'])
             low_list.append(data[i]['low'])
             timestamp_list.append(data[i]['timestamp'])
+            print(data[i]['timestamp'])
 
     stored_vars={}
     stored_vars["timestamp_list"] = timestamp_list
@@ -71,3 +74,4 @@ if __name__ == "__main__":
     with open('data/bitmex_' + default_symbol + '_' + default_kline_size + '_' + start_timestamp.strftime(time_format) + '_' + end_timestamp.strftime(time_format) + '_list.pickle','wb') as handle:
         pickle.dump(stored_vars, handle, protocol = pickle.HIGHEST_PROTOCOL)
     data_df.to_pickle('data/bitmex_pandas_' + default_symbol + '_' + default_kline_size + '_' + start_timestamp.strftime(time_format) + '_' + end_timestamp.strftime(time_format) + '_list.pickle')
+    data_df.to_csv('gitlabData/bitmex_pandas_' + default_symbol + '_' + default_kline_size + '_' + start_timestamp.strftime(time_format) + '_' + end_timestamp.strftime(time_format) + '_list.csv')

@@ -47,11 +47,14 @@ if __name__ == "__main__":
     for query_iter in tqdm(range(num_queries)):
         temp_start_time = start_time + timedelta(minutes = query_iter * batch_size * binsizes[kline_size])
         temp_end_time = temp_start_time + timedelta(minutes = (batch_size-1) * binsizes[kline_size])
+        if query_iter == (num_queries-1):
+            temp_end_time = end_time
         temp_response = requests.get("https://api.pro.coinbase.com/products/{0}/candles?start={1}&end={2}&granularity={3}" \
                                      .format(ticker, temp_start_time, temp_end_time, kline_size))
         temp_response_df = pd.DataFrame(json.loads(temp_response.text))
         temp_response_df[0] = pd.to_datetime(temp_response_df[0], unit='s')
-        data = data.append(temp_response_df)
+        temp_response_df = temp_response_df[::-1].reset_index(drop = True)
+        data = data.append(temp_response_df).reset_index(drop = True)
         close_list.append(temp_response_df[4].tolist())
         open_list.append(temp_response_df[3].tolist())
         low_list.append(temp_response_df[1].tolist())
@@ -70,3 +73,4 @@ if __name__ == "__main__":
     with open('data/coinbase_' + ticker + '_' + kline_size + '_' + start_time_string + '_' + end_time_string + '_list.pickle','wb') as handle:
         pickle.dump(stored_vars, handle, protocol = pickle.HIGHEST_PROTOCOL)
     data.to_pickle('data/coinbase_pandas_' + ticker + '_' + kline_size + '_' + start_time_string + '_' + end_time_string + '_list.pickle')
+    data.to_csv('gitlabData/coinbase_pandas_' + ticker + '_' + kline_size + '_' + start_time_string + '_' + end_time_string + '_list.csv')
