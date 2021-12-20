@@ -121,7 +121,7 @@ class NB:
         print("Predicting Price Direction")
         # prior probabilities
         prior_prob_dec = self._decrease_sum / (self._decrease_sum+self._stagnant_sum+self._increase_sum)
-        prior_prob_stag = self._stagnant_sum / (self._decrease_sum+self._stagnant_sum+self._increase_sum)
+        prior_prob_stag = (self._stagnant_sum + 0.01) / (self._decrease_sum+self._stagnant_sum+self._increase_sum+0.01)
         prior_prob_inc = self._increase_sum / (self._decrease_sum+self._stagnant_sum+self._increase_sum)
         prob_dec = (prior_prob_dec)
         prob_stag = (prior_prob_stag)

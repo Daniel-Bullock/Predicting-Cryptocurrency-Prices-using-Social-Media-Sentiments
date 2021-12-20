@@ -152,6 +152,8 @@ for open, close in zip(eth_usd_open, eth_usd_close):
     else:
         eth_results.append(-1)
 
+btc_plt = btc_results
+eth_plt = eth_results
 btc_results = btc_results[train_no:]
 eth_results = eth_results[train_no:]
 
@@ -195,10 +197,10 @@ eth_nb_google = NB()
 eth_nb_reddit = NB()
 
 # run predictions
-btc_google1, btc_google2, btc_google3 = btc_nb_google.full_suite(btc_train_google, btc_test_google, log=False)
-btc_reddit1, btc_reddit2, btc_reddit3 = btc_nb_reddit.full_suite(btc_train_reddit, btc_test_reddit, log=False)
-eth_google1, eth_google2, eth_google3 = eth_nb_google.full_suite(eth_train_google, eth_test_google, log=False)
-eth_reddit1, eth_reddit2, eth_reddit3 = eth_nb_reddit.full_suite(eth_train_reddit, eth_test_reddit, log=False)
+btc_google1, btc_google2, btc_google3 = btc_nb_google.full_suite(btc_train_google, btc_test_google, log=True)
+btc_reddit1, btc_reddit2, btc_reddit3 = btc_nb_reddit.full_suite(btc_train_reddit, btc_test_reddit, log=True)
+eth_google1, eth_google2, eth_google3 = eth_nb_google.full_suite(eth_train_google, eth_test_google, log=True)
+eth_reddit1, eth_reddit2, eth_reddit3 = eth_nb_reddit.full_suite(eth_train_reddit, eth_test_reddit, log=True)
 
 # do something with predictions
 # calculate percentage correct
@@ -264,3 +266,50 @@ print("BTC Google %: ", str(btc_google1_percent), str(btc_google2_percent), str(
 print("BTC Reddit %: ", str(btc_reddit1_percent), str(btc_reddit2_percent), str(btc_reddit3_percent))
 print("ETH Google %: ", str(eth_google1_percent), str(eth_google2_percent), str(eth_google3_percent))
 print("ETH Reddit %: ", str(eth_reddit1_percent), str(eth_reddit2_percent), str(eth_reddit3_percent))
+
+true_inc = 0
+true_dec = 0
+false_inc = 0
+false_dec = 0
+plot_var = eth_reddit1
+for i in range(len(plot_var)):
+    if btc_results[i] == 1:
+        if plot_var[i] == 1:
+            true_inc += 1
+        else:
+            false_dec += 1
+    elif btc_results[i] == -1:
+        if plot_var[i] == -1:
+            true_dec += 1
+        else:
+            false_inc += 1
+'''
+    if plot_var[i] == btc_results[i]:
+        if plot_var[i] == 1:
+            true_inc += 1
+        elif plot_var[i] == -1:
+            true_dec += 1
+    else:
+        if plot_var[i] == 1:
+            false_inc += 1
+        elif plot_var[i] == -1:
+            false_dec += 1
+'''
+total_inc = true_inc + false_inc
+total_dec = true_dec + false_dec
+#print(btc_reddit3)
+print(true_inc / total_inc)
+print(false_inc / total_inc)
+print(true_dec / total_dec)
+print(false_dec / total_dec)
+
+import matplotlib.pyplot as plt
+from collections import Counter
+plt_v = reddit_BTC
+plt_r = btc_plt
+combos = list(zip(plt_v, plt_r))
+weight_cnt = Counter(combos)
+weights = [weight_cnt[(plt_v[i], plt_r[i])] for i, _ in enumerate(plt_v)]
+plt.figure()
+plt.scatter(plt_v, plt_r, s=weights)
+plt.show()
