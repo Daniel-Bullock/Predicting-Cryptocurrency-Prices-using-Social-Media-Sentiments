@@ -117,35 +117,35 @@ class NB:
                 0 for perdicted stagnant price
                 -1 for predicted decrease in price
     '''
-    def predict(self, test_data:list) -> list:
+    def predict(self, test_data:list, log:bool=True) -> list:
         print("Predicting Price Direction")
         # prior probabilities
         prior_prob_dec = self._decrease_sum / (self._decrease_sum+self._stagnant_sum+self._increase_sum)
         prior_prob_stag = self._stagnant_sum / (self._decrease_sum+self._stagnant_sum+self._increase_sum)
         prior_prob_inc = self._increase_sum / (self._decrease_sum+self._stagnant_sum+self._increase_sum)
-        prob_dec = math.log(prior_prob_dec)
-        prob_stag = math.log(prior_prob_stag)
-        prob_inc = math.log(prior_prob_inc)
+        prob_dec = (prior_prob_dec)
+        prob_stag = (prior_prob_stag)
+        prob_inc = (prior_prob_inc)
 
         price_predictions = []
 
         # calculate price direction probabilities for social data
         for social in test_data:
-            prob_dec = math.log(prior_prob_dec)
-            prob_stag = math.log(prior_prob_stag)
-            prob_inc = math.log(prior_prob_inc)
+            prob_dec = self._log(prior_prob_dec, log)
+            prob_stag = self._log(prior_prob_stag, log)
+            prob_inc = self._log(prior_prob_inc, log)
             if social in self.decrease_prob:
-                prob_dec += math.log(self.decrease_prob[social])
+                prob_dec += self._log(self.decrease_prob[social], log)
             else:
-                prob_dec += math.log(self._dec_UNK)
+                prob_dec += self._log(self._dec_UNK, log)
             if social in self.stagnant_prob:
-                prob_stag += math.log(self.stagnant_prob[social])
+                prob_stag += self._log(self.stagnant_prob[social], log)
             else:
-                prob_stag += math.log(self._stag_UNK)
+                prob_stag += self._log(self._stag_UNK, log)
             if social in self.increase_prob:
-                prob_inc += math.log(self.increase_prob[social])
+                prob_inc += self._log(self.increase_prob[social], log)
             else:
-                prob_inc += math.log(self._inc_UNK)
+                prob_inc += self._log(self._inc_UNK, log)
             
             # find max probability for price direction
             if prob_dec == prob_inc:    # rare case of equal decrease & increase probabilities
@@ -155,6 +155,19 @@ class NB:
                 price_predictions.append((probs.index(max(probs))) - 1)
 
         return price_predictions
+    
+
+    ''' _log - static method for taking log of input if bool value is set
+        inputs: input - value to take or not take log of
+                log - boolean value indicating whether or not to take log
+        outputs: log of input if log, else input
+    '''
+    @staticmethod
+    def _log(input:float, log:bool) -> float:
+        if log:
+            return math.log(input)
+        else:
+            return input
 
 
     ''' cnb_train - train a CategoricalNB from sklearn package
@@ -265,9 +278,9 @@ class NB:
                         -1 for predicted decrease in price
         side effects: resets all training data
     '''
-    def full_suite(self, new_training_data:list, test_data:list) -> tuple:
+    def full_suite(self, new_training_data:list, test_data:list, log:bool=True) -> tuple:
         self.reset()
         self.train(new_training_data)
         self.cnb_train(new_training_data)
         self.gnb_train(new_training_data)
-        return self.predict(test_data), self.cnb_predict(test_data), self.gnb_predict(test_data)
+        return self.predict(test_data, log), self.cnb_predict(test_data), self.gnb_predict(test_data)
