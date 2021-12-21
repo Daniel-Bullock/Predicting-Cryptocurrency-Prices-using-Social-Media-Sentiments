@@ -2,6 +2,9 @@
 
 ## Introduction
 
+A model for predicting price movements of cryptocurrencies based on publicity trends on social media and on-chain transaction data. Training data fed into predictive models consists of previous trends and associated cryptocurrency price changes for various coins, and live data of publicity trends for coins serves as test data for models to predict price movements. 2 predictive models - naive bayes for classification and long short-term memory model as a model for granular predictions. We put the proverb “All publicity is good publicity” to test! 
+
+
 ## Social media data collection
 
 ## Chain data collection
@@ -109,11 +112,13 @@ Ranvir
 - Wrote code to fetch and parse price data from Coinbase and Bitmex; this code can be found in the `priceData` folder.
 - Wrote code to train and test LSTM predictor, this code can be found in the `LSTM_model` folder
 - Wrote code to plot results of the LSTM predictor
+
 Ghassan
 - Contributed to Google Trends API
 - In charge of twitter (tweepy) API that didn’t work out (due to pricing and data limitations)
 - Contributed to Reddit API
 - Team Leader
+
 Daniel
 - Contributed to Google Trends API
 - Wrote script for data cleaning
