@@ -35,6 +35,7 @@ The data is then parsed and stored in a pandas dataframe with data aggregated in
 Thus generating a total of 12 data points per time slot.
 
 ![ChainWatcher](images/chainWatcher.png)
+<img src="images/chainWatcher1.png" alt="ChainWatcher" width="500"/>
 
 Note that with the advent of side chains like polygon, many transfer of tokens occur on these sidechains, the same 
 code with certain modifications (changing contract address for example) can be used to fetch polygon chain data. 
