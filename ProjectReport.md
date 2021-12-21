@@ -7,6 +7,11 @@ A model for predicting price movements of cryptocurrencies based on publicity tr
 
 ## Social media data collection
 
+We retrieved Reddit data from the subreddit CryptoCurrency using the PushShift API Wrapper package. We only tested one subreddit because of how long the computation time took to retrieve this data due to inadequacies with the Reddit API. We chose the CryptoCurrency subreddit because we think it has a good balance of people posting very reasonable and genuine questions, relevant news articles, and people just stating their opinions. Other cryptocurrency related subreddits had a lot of posts which would just be focused on humor. We used the frequency of posts on the subreddit in an hour span from January 1st to December 20th of 2020 to train the data for the Naive Bayes and the rest of the year to run it on. A potential source of error for this data could be that we checked for search terms involving each coin in the title, sometimes the title might not actually be about said coin. Also no sentiment analysis was done on each post, so whenever it was a negative article it would only affect the prediction in the positive direction. 
+
+We retrieved Google Trends data from the PyTrends package. We used the historical hourly interest from our search terms which is historical, indexed, hourly data for when the keyword was searched most as shown on Google Trends' Interest Over Time section. Each hour is a ratio from the current hour’s number of searches to the highest number of searches over the entire time period searched (one year). This was the only way of retrieving any sort of relevant data which could be a major form of error because we combined multiple search terms’ hourly interest together, which would make the final hourly interest ratio we gathered a ratio of multiple highpoints added up.
+
+
 ## Chain data collection
 
 Transactions of all ERC20 tokens (ERC20 is a token standard on ethereum) are recorded on the ethereum blockchain. 
@@ -66,6 +71,7 @@ these programs are provided at `priceData/README.md`.
 
 ## Naive Bayes Classifier
 
+We implemented 3 Naive Bayes models: NB classifier (modified multinomial NB), and 2 NB models from the scikit-learn library - CategoricalNB and Gaussian NB. The NB classifier uses laplace smoothing and takes the log of calculated probabilities to prevent underflow. The results from the NB models were less than promising. The results of the NB testing after 8500 data points can be seen in the figure below. Despite the GaussianNB appearing to have the best accuracy, it always predicted a price increase except for the ETH Reddit data. The NB classifier and CategoricalNB made identical predictions, yet were overly bearish as they performed worse than the prediction of always increasing price.
 
 
 ## LSTM predictor
