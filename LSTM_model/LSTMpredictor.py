@@ -23,6 +23,10 @@ def load_data(ticker, data_mode, test_ratio, sequence_length, leeway):
     chain_data = pd.read_pickle('../ethChainData/processed_data/'+ ticker + '_' + data_mode + '_stat_pandas_1m.pickle')
     if ticker == 'LINK' and data_mode == 'eth':
         price_data = pd.read_pickle('../priceData/data/coinbase_pandas_LINK-USD_1m_2021-11-30 16:35:00_2021-12-11 19:52:00_list.pickle')
+    elif ticker == 'SHIB' and data_mode == 'eth':
+        price_data = pd.read_pickle('../priceData/data/coinbase_pandas_SHIB-USD_1m_2021-11-30 17:47:00_2021-12-11 21:10:00_list.pickle')
+    elif ticker == 'MKR' and data_mode == 'eth':
+        price_data = pd.read_pickle('../priceData/data/coinbase_pandas_MKR-USD_1m_2021-11-30 20:40:00_2021-12-11 23:56:00_list.pickle')
     else:
         print("Price data not available, please download")
         sys.exit(1)
@@ -141,5 +145,5 @@ if __name__ == "__main__":
     plt.plot(range(400), test_y_pred[500:900], color = 'g')
     plt.show()
 
-    torch.save(model, 'saved_models/lstm_'+ ticker + '_' + data_mode + '_' + str(num_epochs) + 'saved.pth')
+    torch.save(model, 'saved_models/lstm_crossentropy'+ ticker + '_' + data_mode + '_' + str(num_epochs) + 'saved.pth')
 
