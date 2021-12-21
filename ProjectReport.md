@@ -109,14 +109,15 @@ Ranvir
 - Wrote code to fetch and parse price data from Coinbase and Bitmex; this code can be found in the `priceData` folder.
 - Wrote code to train and test LSTM predictor, this code can be found in the `LSTM_model` folder
 - Wrote code to plot results of the LSTM predictor
-Ghassan:
--Team Leader
--Contributed to Google Trends API
--In charge of twitter (tweepy) API that didn’t work out
--Contributed to Reddit API
+Ghassan
+- Contributed to Google Trends API
+- In charge of twitter (tweepy) API that didn’t work out (due to pricing and data limitations)
+- Contributed to Reddit API
+- Team Leader
 Daniel
--Contributed to Google Trends API
--Contributed to Reddit API
--Wrote script for data cleaning
--Researched different twitter APIs to try to find a functional one
+- Contributed to Google Trends API
+- Wrote script for data cleaning
+- Contributed to Reddit API
+- Researched different twitter APIs to try to find a functional one
+
 
