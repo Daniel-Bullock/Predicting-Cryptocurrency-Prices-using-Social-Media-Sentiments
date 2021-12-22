@@ -131,4 +131,10 @@ Daniel
 - Contributed to Reddit API
 - Researched different twitter APIs to try to find a functional one
 
-
+Michael
+- Wrote library for Naive Bayes training and testing, including the NB clasifier, CategoricalNB, and Gaussian NB; this code can be found in the `NaiveBayes.py` file
+- Wrote scirpt for data cleaning (removing duplicate entries to google trend data, and fixing missing entries of price data)
+- Wrote code to conjoin social data with price data and train & test each NB model for BTC and ETH based on google trend and reddit data; this code can be found in the `CryptoPredictor.py` file
+- Ran analysis of NB results including plotting social data & price correlation, and calculating accuracies of each model with true/false positives/negatives
+- Wrote code to launch a scheduler for real-time NB testing with continuous training; this code can be found in the commented out section of the `CryptoPredictor.py` file
+- Performed initial project research and based project dea on [this paper](https://www.researchgate.net/publication/279917417_Bitcoin_Spread_Prediction_Using_Social_And_Web_Search_Media)
