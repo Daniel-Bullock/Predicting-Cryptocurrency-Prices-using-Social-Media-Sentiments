@@ -75,6 +75,47 @@ We implemented 3 Naive Bayes models: NB classifier (modified multinomial NB), an
 
 <img alt="NB_Results" src="images/NB_Results.png" width="500"/>
 
+Naive Bayes are methods of well-defined learning algorithms based on Bayes' theorem and the assumption of conditional dependence between the training variables. The derivation of the basic Naive Bayes relationship is shown below. Each of the NB models differ by making various assumptions about the distribution of the relationship between the conditionally dependent variables.
+
+<img alt="NB_Math" src="images/NB_Math.png" width="500"/>
+
+The NB Classifier uses the following equation in its predictive model:
+
+<img alt="ClassifierNB_equation" src="images/ClassifierNB_equation.png" width="500"/>
+
+The CategoricalNB uses a similar equation:
+
+<img alt="CategoricalNB_equation" src="images/CategoricalNB_equation.png" width="500"/>
+
+And the GaussianNB makes the assumption of a gaussian distribution between the conditionally dependent variables shown below:
+
+<img alt="GaussianNB_equation" src="images/GaussianNB_equation.png" width="500"/>
+
+The inputs for the training stage of each of our NB models included the social media data for a coin from a single source (i.e. Google Trends OR Reddit, each media has its own separate training), and the coin's price delta for the past hour. These values are zipped together and fed into the training functions as a list of tuples formatted [ (float<social data>, float<price change>), ... ]. The input to the prediction functions is only the social media data for the coin over the past hour, and this outputs the NB prediction of the coin's price's direction. The NB functions as a classifier, so the output classifies the price direction into whether the price will increase, decrease, or remain stagnant. The coin's prices in both the input and the prediction are not weighted. Additionally, the range for a price to be "stagnant" is only +/-$0.01, so this is a rare occurance and as a result none of the predictive models ever output a stagnant price because the prior probability is too low. For a more risk averse model, this range should be increased. Our suggestion is to increase the range of a "stagnant" price to a set small percentage of the coin's price. This way the model only treats a more significant price delta as an increase or decrease in price and will always cover the transaction costs of buying/selling the coin.
+
+The results of the GaussianNB indicate that there is certainly not a gaussian distribution in the relationship between the social media data and price deltas of Bitcoin, and potentially only a weak gaussian distribution between reddit data and Ethereum prices since the GaussianNB always predicted a price increase except in the case of the ETH Reddit model. The relationship between Bitcoin and Google Trends/Reddit mentions are shown in the scatter plots below. The x-axis for each graph is the social media data (discussed in the section above), and the y-value is the discrete price delta classes (1.0=increase, 0.0=stagnant, -1.0=decrease). The size of the dot on the scatter plot indicates the frequency of that input (i.e. Reddit data with 0 mentions is very common and so there is a noticably large amount of inputs with 0 reddit mentions and both price increases and decreases). As seen in the graphs, there is hardly any distinguishable relationship between price decreases and increases for BTC based on the Google trend data since the upper and lower sections of the graph appear to mirror each other very closely. Similaryly, the Reddit data is seemingly mirrored, but has some distinction and can be seen in the more accurate prediction results from the NB models. Also notable is that there are very few occurances of stagnant prices.
+
+<img alt="BTC_Google_Correlation" src="images/BTC_Google_Correlation.png" width="500"/>
+<img alt="BTC_Reddit_Correlation" src="images/BTC_Reddit_Correlation.png" width="500"/>
+
+Below are the tables showing the percentages of true and false positives and negatives for both BTC and ETH based on both Google Trend and Reddit data. The tables indicate the percentage of the time the actual price delta was increased how often the models predicted a price increase, etc. The BTC predictions based on Google Trend data was very poor and actually had a negative effect indicted by the percentage to the right of the graph. The rest of the models all had positive results.
+
+<img alt="BTC_TF_PN" src="images/BTC_TF_PN.png" width="500"/>
+<img alt="ETH_TF_PN" src="images/ETH_TF_PN.png" width="500"/>
+
+Some of the conclusions we can draw from the Naive Bayes models is that Reddit data is a better indicator of price direction than Google Trends. However, both of these models were still worse than simply always predicting a price increase which is discouraging. This is due to the overly bearish predictions from the models. Additionally, the price of Ethereum follows the social data more closely than Bitcoin as seen by the true/false positives/negatives impacts. We hypothesize that this effect would be even more amplified for less popular coins that are more likely to have higher volatility driven by retail traders.
+
+A few possible contributions to the error in our NB models could be the following:
+- Format of Google Trends data - represents interest relative to highest point in given range
+- Lack of popularity in Reddit data - high amount of 0 or 1 mentions
+- Lack of training data - Only trained from Jan. 1, 2020 to Dec. 20, 2020
+  - Testing with more training indicated better prediction accuracies
+  - Not trained on an entire calendar year
+- Lack of stagnant price range
+  - Current implementation has +/- $0.01 range for stagnant price
+
+In addition to the NB models that were implemented, we additionally implemented some tools that went unutilized. We created a scheduler that trains the NB models on historical data once, then tests hourly on real-time social media data. With the scheduler also includes continuous training which stores the previous hour's social data in a buffer during continuous testing and then pairs it with the most recent price delta and adds them to the training model. The reason these tools went unutilized was that they were limited by the API calls needing to function every hour which was not available.
+
 ## LSTM predictor
 
 We use neural networks to predict the price of ERC20 tokens using past price data and chain data as input. LSTM (Long Short-Term Memory)
@@ -138,4 +179,4 @@ Michael
 - Wrote code to conjoin social data with price data and train & test each NB model for BTC and ETH based on google trend and reddit data; this code can be found in the `CryptoPredictor.py` file
 - Ran analysis of NB results including plotting social data & price correlation, and calculating accuracies of each model with true/false positives/negatives
 - Wrote code to launch a scheduler for real-time NB testing with continuous training; this code can be found in the commented out section of the `CryptoPredictor.py` file
-- Performed initial project research and based project dea on [this paper](https://www.researchgate.net/publication/279917417_Bitcoin_Spread_Prediction_Using_Social_And_Web_Search_Media)
+- Performed initial project research and based project idea on [this paper](https://www.researchgate.net/publication/279917417_Bitcoin_Spread_Prediction_Using_Social_And_Web_Search_Media)
