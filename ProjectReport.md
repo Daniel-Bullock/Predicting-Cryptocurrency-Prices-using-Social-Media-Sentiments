@@ -73,6 +73,7 @@ these programs are provided at `priceData/README.md`.
 
 We implemented 3 Naive Bayes models: NB classifier (modified multinomial NB), and 2 NB models from the scikit-learn library - CategoricalNB and Gaussian NB. The NB classifier uses laplace smoothing and takes the log of calculated probabilities to prevent underflow. The results from the NB models were less than promising. The results of the NB testing after 8500 data points can be seen in the figure below. Despite the GaussianNB appearing to have the best accuracy, it always predicted a price increase except for the ETH Reddit data. The NB classifier and CategoricalNB made identical predictions, yet were overly bearish as they performed worse than the prediction of always increasing price.
 
+<img alt="NB_Results" src="images/NB_Results.png" width="500"/>
 
 ## LSTM predictor
 
@@ -132,7 +133,7 @@ Daniel
 - Researched different twitter APIs to try to find a functional one
 
 Michael
-- Wrote library for Naive Bayes training and testing, including the NB clasifier, CategoricalNB, and Gaussian NB; this code can be found in the `NaiveBayes.py` file
+- Wrote library for Naive Bayes training and testing functions, including the NB clasifier, CategoricalNB, and Gaussian NB; this code can be found in the `NaiveBayes.py` file
 - Wrote scirpt for data cleaning (removing duplicate entries to google trend data, and fixing missing entries of price data)
 - Wrote code to conjoin social data with price data and train & test each NB model for BTC and ETH based on google trend and reddit data; this code can be found in the `CryptoPredictor.py` file
 - Ran analysis of NB results including plotting social data & price correlation, and calculating accuracies of each model with true/false positives/negatives
